@@ -1,0 +1,21 @@
+{
+    "name": "Merdium",
+    "version": "1.0.0",
+    "description": "small single-server Discord bot",
+    "repository": "https://github.com/Fulerenn/Merdium",
+    "author": "Fulerenn",
+    "license": "GPL-3.0",
+    "private": false,
+    "scripts": {
+        "start": "node build/index.js",
+        "start:watch": "nodemon build/index.js",
+        "build": "tsc --build",
+        "watch": "tsc --watch"
+    },
+    "dependencies": {
+        "discord.js": "^14.0.3",
+        "dotenv": "^16.0.1",
+        "nodemon": "^2.0.19",
+        "typescript": "^4.7.4"
+    }
+}
