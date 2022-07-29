@@ -25,6 +25,7 @@ import { readdirSync } from "fs";
 import { resolve as resolveDir } from "path";
 
 import { MerdiumEvent } from "./utils/events";
+import { MerdiumCommand } from "./utils/commands";
 import { Logger } from "./utils/logger";
 
 config();
@@ -38,6 +39,7 @@ class MerdiumClient extends Client {
         this.logger = new Logger();
 
         this.registerEvents();
+        this.registerCommands();
 
         this.login(process.env.DISCORD_TOKEN);
     }
@@ -52,6 +54,20 @@ class MerdiumClient extends Client {
             this.on(event.id, (...args) => event.execute(...args));
 
             this.logger.log(`Registered event ${event.id}`);
+        });
+    }
+
+    registerCommands() {
+        return this.logger.warn("registerCommands() is not available yet!");
+
+        const baseCommandsDir = resolveDir("./build/commands/");
+
+        readdirSync(baseCommandsDir).map((file) => {
+            const command: MerdiumCommand =
+                require(`${baseCommandsDir}/${file}`).default;
+
+            // TODO: Register slash commands when logging and unregister when logging off
+            // TODO: Make interaction event "stretchable", so it's not limited only to few things
         });
     }
 }

@@ -14,11 +14,6 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { ClientEvents } from "discord.js";
+interface MerdiumCommand {}
 
-interface MerdiumEvent {
-    id: keyof ClientEvents;
-    execute: (...args: any[]) => void;
-}
-
-export { MerdiumEvent };
+export { MerdiumCommand };
