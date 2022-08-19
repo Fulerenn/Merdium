@@ -14,13 +14,16 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { PermissionsString, Message } from "discord.js";
+import { Message } from "discord.js";
+import { MerdiumChatCommand } from "../utils/commands";
 
-interface MerdiumChatCommand {
-    name: string;
-    description?: string;
-    permissions: PermissionsString[];
-    run: (message: Message) => void;
-}
+const command: MerdiumChatCommand = {
+    name: "test",
+    description: "This is only a test command",
+    permissions: ["ManageMessages"],
+    run: (message: Message) => {
+        return message.channel.send("Eyy!");
+    },
+};
 
-export { MerdiumChatCommand };
+export default command;
