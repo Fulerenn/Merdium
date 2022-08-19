@@ -25,13 +25,14 @@ import { readdirSync } from "fs";
 import { resolve as resolveDir } from "path";
 
 import { MerdiumEvent } from "./utils/events";
-import { MerdiumCommand } from "./utils/commands";
+import { MerdiumChatCommand } from "./utils/commands";
 import { Logger } from "./utils/logger";
 
 config();
 
 class MerdiumClient extends Client {
     public logger: Logger;
+    private commands: MerdiumChatCommand[] = [];
 
     constructor(options: ClientOptions) {
         super(options);
@@ -58,16 +59,80 @@ class MerdiumClient extends Client {
     }
 
     registerCommands() {
-        return this.logger.warn("registerCommands() is not available yet!");
+        //return this.logger.warn("registerCommands() is not available yet!");
 
         const baseCommandsDir = resolveDir("./build/commands/");
 
         readdirSync(baseCommandsDir).map((file) => {
-            const command: MerdiumCommand =
+            const command: MerdiumChatCommand =
                 require(`${baseCommandsDir}/${file}`).default;
 
+            // TODO: Migrate to Slash Commands (or make it in parallel with chat commands)
             // TODO: Register slash commands when logging and unregister when logging off
             // TODO: Make interaction event "stretchable", so it's not limited only to few things
+
+            if (!command) {
+                return this.logger.error(
+                    `There is no real command defined in ${file}!`
+                );
+            }
+
+            if (!command.name || !command.description || !command.run) {
+                return this.logger.error(`Command ${file} has missing fields`);
+            }
+
+            this.commands.push(command);
+        });
+
+        this.on("messageCreate", (message) => {
+            if (message.author.bot || !message.guild) return;
+            if (!message.content.startsWith("!")) return;
+
+            const args = message.content.slice(1).trim().split(/ +/g);
+            const input = args.shift().toLowerCase();
+
+            const command = this.commands.find(
+                (element) => element.name == input
+            );
+
+            if (!command) {
+                message.channel.send(`Undefined command ${input}`);
+                return;
+            }
+
+            /*command.permissions.map((permission) => {
+                if (!message.member.permissions.has(permission)) {
+                    message.channel.send("Insufficient permissions");
+                    return;
+                }
+            });*/
+
+            // TODO: Temporary, figure it out in a better way (without variable)
+            let isPermitted = true;
+
+            if (command.permissions && command.permissions.length) {
+                command.permissions.find((permission) => {
+                    if (!message.member.permissions.has(permission)) {
+                        isPermitted = false;
+
+                        return;
+                    }
+                });
+            }
+
+            if (!isPermitted) {
+                message.channel.send("Insufficient permissions");
+                return;
+            }
+
+            try {
+                command.run(message);
+            } catch (error) {
+                this.logger.error(error);
+                message.channel.send(
+                    "Something unwanted happened on our side! Try again later"
+                );
+            }
         });
     }
 }
