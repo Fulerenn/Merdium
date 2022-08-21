@@ -24,16 +24,16 @@ import { config } from "dotenv";
 import { readdirSync } from "fs";
 import { resolve as resolveDir } from "path";
 
+import { Logger } from "./utils/logger";
 import { MerdiumEvent } from "./utils/events";
 import { MerdiumChatCommand } from "./utils/commands";
-import { Logger } from "./utils/logger";
 
 config();
 
 class MerdiumClient extends Client {
     public logger: Logger;
 
-    private commands: MerdiumChatCommand[] = [];
+    public commands: MerdiumChatCommand[] = [];
 
     constructor(options: ClientOptions) {
         super(options);
@@ -47,20 +47,20 @@ class MerdiumClient extends Client {
     }
 
     registerEvents() {
-        const baseEventsDir = resolveDir("./build/events/");
+        const baseEventsDir: string = resolveDir("./build/events/");
 
         readdirSync(baseEventsDir).map((file) => {
             const event: MerdiumEvent =
                 require(`${baseEventsDir}/${file}`).default;
 
-            this.on(event.id, (...args) => event.execute(...args));
+            this.on(event.id, (...args) => event.execute(...args, this));
 
             this.logger.log(`Registered event ${event.id}`);
         });
     }
 
     registerCommands() {
-        const baseCommandsDir = resolveDir("./build/commands/");
+        const baseCommandsDir: string = resolveDir("./build/commands/");
 
         readdirSync(baseCommandsDir).map((file) => {
             const command: MerdiumChatCommand =
@@ -87,10 +87,10 @@ class MerdiumClient extends Client {
             if (message.author.bot || !message.guild) return;
             if (!message.content.startsWith("!")) return;
 
-            const args = message.content.slice(1).trim().split(/ +/g);
-            const input = args.shift().toLowerCase();
+            const args: string[] = message.content.slice(1).trim().split(/ +/g);
+            const input: string = args.shift().toLowerCase();
 
-            const command = this.commands.find(
+            const command: MerdiumChatCommand = this.commands.find(
                 (element) => element.name == input
             );
 
@@ -100,13 +100,12 @@ class MerdiumClient extends Client {
             }
 
             // TODO: Temporary, figure it out in a better way (without variable)
-            let isPermitted = true;
+            let isPermitted: boolean = true;
 
             if (command.permissions && command.permissions.length) {
                 command.permissions.find((permission) => {
                     if (!message.member.permissions.has(permission)) {
                         isPermitted = false;
-
                         return;
                     }
                 });

@@ -39,7 +39,7 @@ class Logger {
             minute: "0",
         };
 
-        const snapshot = new Date();
+        const snapshot: Date = new Date();
         storage.day += snapshot.getDay().toString();
         storage.month += snapshot.getMonth().toString();
         storage.year = snapshot.getFullYear().toString();
