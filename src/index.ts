@@ -119,7 +119,7 @@ class MerdiumClient extends Client {
 
             // TODO: Error Handler (or service? :thinking:)
             try {
-                command.run(message);
+                command.run(message, this);
             } catch (error) {
                 this.logger.error(error);
                 message.channel.send(
