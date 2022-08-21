@@ -14,15 +14,27 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { Message } from "discord.js";
+import { Message, EmbedBuilder } from "discord.js";
+import { MerdiumClient } from "..";
 import { MerdiumChatCommand } from "../utils/commands";
 
 const command: MerdiumChatCommand = {
-    name: "test",
-    description: "This is only a test command",
-    permissions: ["ManageMessages"],
-    run: (message: Message) => {
-        return message.channel.send("Eyy!");
+    name: "help",
+    description: "Display's all available commands",
+    run: (message: Message, client: MerdiumClient) => {
+        const embed = new EmbedBuilder()
+            .setTitle("Merdium Commands")
+            .setColor("#05668D");
+
+        client.commands.map((command: MerdiumChatCommand, index) => {
+            embed.addFields({
+                name: command.name,
+                value: command.description,
+                inline: false,
+            });
+        });
+
+        return message.channel.send({ embeds: [embed] });
     },
 };
 

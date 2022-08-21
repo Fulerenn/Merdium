@@ -15,12 +15,13 @@
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { PermissionsString, Message } from "discord.js";
+import { MerdiumClient } from "../index";
 
 interface MerdiumChatCommand {
     name: string;
     description?: string;
-    permissions: PermissionsString[];
-    run: (message: Message) => void;
+    permissions?: PermissionsString[];
+    run: (message: Message, client: MerdiumClient) => void;
 }
 
 export { MerdiumChatCommand };
