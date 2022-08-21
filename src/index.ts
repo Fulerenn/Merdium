@@ -99,13 +99,6 @@ class MerdiumClient extends Client {
                 return;
             }
 
-            /*command.permissions.map((permission) => {
-                if (!message.member.permissions.has(permission)) {
-                    message.channel.send("Insufficient permissions");
-                    return;
-                }
-            });*/
-
             // TODO: Temporary, figure it out in a better way (without variable)
             let isPermitted = true;
 
@@ -124,12 +117,13 @@ class MerdiumClient extends Client {
                 return;
             }
 
+            // TODO: Error Handler (or service? :thinking:)
             try {
                 command.run(message);
             } catch (error) {
                 this.logger.error(error);
                 message.channel.send(
-                    "Something unwanted happened on our side! Try again later"
+                    "Something unexpected happened on our side! Try again later"
                 );
             }
         });
