@@ -29,32 +29,32 @@ class Logger {
         console.log(`[ERROR] (${this.getFormatedDate()}) ${message}`);
     }
 
-    // TODO: Make it cleaner
+    // TODO:Test if it works
     private getFormatedDate() {
         let storage = {
-            day: "0",
-            month: "0",
-            year: "",
-            hour: "",
-            minute: "0",
+            day: 00,
+            month: 00,
+            year: 0000,
+            hour: 00,
+            minute: 00,
         };
 
         const snapshot: Date = new Date();
-        storage.day += snapshot.getDay().toString();
-        storage.month += snapshot.getMonth().toString();
-        storage.year = snapshot.getFullYear().toString();
-        storage.hour = snapshot.getHours().toString();
-        storage.minute += snapshot.getMinutes().toString();
-
-        storage.minute = this.normalizeDate(storage.minute);
-        storage.day = this.normalizeDate(storage.day);
-        storage.month = this.normalizeDate(storage.month);
+        storage.day = normalizeDigits(snapshot.getDay());
+        storage.month = normalizeDigits(snapshot.getMonth());
+        storage.year = snapshot.getFullYear();
+        storage.hour = normalizeDigits(snapshot.getHours());
+        storage.minute = normalizeDigits(snapshot.getMinutes());
 
         return `${storage.day}.${storage.month}.${storage.year} ${storage.hour}:${storage.minute}`;
     }
 
-    private normalizeDate(content: string) {
-        return content.slice(-2);
+    private normalizeDigits(digits: number) {
+        if (digits < 10) {
+            return "0" + digits;
+        }
+
+        return digits;
     }
 }
 
