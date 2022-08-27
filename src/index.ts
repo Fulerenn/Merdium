@@ -46,7 +46,7 @@ class MerdiumClient extends Client {
         this.login(process.env.DISCORD_TOKEN);
     }
 
-    registerEvents() {
+    private registerEvents() {
         const baseEventsDir: string = resolveDir("./build/events/");
 
         readdirSync(baseEventsDir).map((file) => {
@@ -59,7 +59,7 @@ class MerdiumClient extends Client {
         });
     }
 
-    registerCommands() {
+    private registerCommands() {
         const baseCommandsDir: string = resolveDir("./build/commands/");
 
         readdirSync(baseCommandsDir).map((file) => {
@@ -76,8 +76,10 @@ class MerdiumClient extends Client {
                 );
             }
 
-            if (!command.name || !command.description || !command.run) {
-                return this.logger.error(`Command ${file} has missing fields`);
+            if (!command.name || !command.run) {
+                return this.logger.error(
+                    `Command ${file} has missing required fields`
+                );
             }
 
             this.commands.push(command);
