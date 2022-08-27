@@ -17,38 +17,39 @@
 class Logger {
     constructor() {}
 
-    public log(message: string) {
+    log(message: string) {
         console.log(`[LOG] (${this.getFormatedDate()}) ${message}`);
     }
 
-    public warn(message: string) {
+    warn(message: string) {
         console.log(`[WARN] (${this.getFormatedDate()}) ${message}`);
     }
 
-    public error(message: string) {
+    error(message: string) {
         console.log(`[ERROR] (${this.getFormatedDate()}) ${message}`);
     }
 
+    // TODO:Test if it works
     private getFormatedDate() {
         let storage = {
-            day: 0,
-            month: 0,
-            year: 0,
-            hour: 0,
-            minute: 0,
+            day: 00,
+            month: 00,
+            year: 0000,
+            hour: 00,
+            minute: 00,
         };
 
         const snapshot: Date = new Date();
-        storage.day = this.normalizeDigits(snapshot.getDay());
-        storage.month = this.normalizeDigits(snapshot.getMonth());
+        storage.day = normalizeDigits(snapshot.getDay());
+        storage.month = normalizeDigits(snapshot.getMonth());
         storage.year = snapshot.getFullYear();
-        storage.hour = this.normalizeDigits(snapshot.getHours());
-        storage.minute = this.normalizeDigits(snapshot.getMinutes());
+        storage.hour = normalizeDigits(snapshot.getHours());
+        storage.minute = normalizeDigits(snapshot.getMinutes());
 
         return `${storage.day}.${storage.month}.${storage.year} ${storage.hour}:${storage.minute}`;
     }
 
-    private normalizeDigits(digits: any) {
+    private normalizeDigits(digits: number) {
         if (digits < 10) {
             return "0" + digits;
         }
