@@ -24,12 +24,21 @@ const command: MerdiumChatCommand = {
     run: (message: Message, client: MerdiumClient) => {
         const embed: EmbedBuilder = new EmbedBuilder()
             .setTitle("Merdium Commands")
+            .setDescription("Here's a list of all my commands")
+            .setFooter({
+                text: `Executed by ${message.author.tag}`,
+                iconURL: message.author.avatarURL({
+                    extension: "webp",
+                }),
+            })
             .setColor("#05668D");
 
         client.commands.map((command: MerdiumChatCommand, index) => {
             embed.addFields({
                 name: command.name,
-                value: command.description,
+                value: command.description
+                    ? command.description
+                    : "No description",
                 inline: false,
             });
         });
