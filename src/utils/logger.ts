@@ -29,7 +29,6 @@ class Logger {
         console.log(`[ERROR] (${this.getFormatedDate()}) ${message}`);
     }
 
-    // TODO: Make it cleaner
     private getFormatedDate() {
         let storage = {
             day: 0,
