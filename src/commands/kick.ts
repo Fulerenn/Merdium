@@ -14,7 +14,7 @@
 //     You should have received a copy of the GNU General Public License
 //     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { Message } from "discord.js";
+import { GuildMember, Message, User } from "discord.js";
 import { MerdiumChatCommand } from "../utils/commands";
 
 const command: MerdiumChatCommand = {
@@ -22,12 +22,12 @@ const command: MerdiumChatCommand = {
     description: "Give's a kick to a target user",
     permissions: ["BanMembers"],
     run: (message: Message) => {
-        const defReason = "Reason unspecified!";
+        const defReason: string = "Reason unspecified!";
 
-        const args = message.content.slice(1).trim().split(/ +/g);
-        const target = message.mentions.users.first();
+        const args: string[] = message.content.slice(1).trim().split(/ +/g);
+        const target: User = message.mentions.users.first();
 
-        let reason = [...args].slice(2).join(" ");
+        let reason: string = [...args].slice(2).join(" ");
 
         if (reason == "") reason = defReason;
 
@@ -38,7 +38,9 @@ const command: MerdiumChatCommand = {
                 `You can not kick yourself! \`\`${target.id} (${target.tag}) == ${message.author.id} (${message.author.tag})\`\``
             );
 
-        const targetMember = message.guild.members.cache.get(target.id);
+        const targetMember: GuildMember = message.guild.members.cache.get(
+            target.id
+        );
 
         if (!targetMember.kickable)
             return message.channel.send(

@@ -22,7 +22,7 @@ const command: MerdiumChatCommand = {
     name: "help",
     description: "Display's all available commands",
     run: (message: Message, client: MerdiumClient) => {
-        const embed = new EmbedBuilder()
+        const embed: EmbedBuilder = new EmbedBuilder()
             .setTitle("Merdium Commands")
             .setColor("#05668D");
 
