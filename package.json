@@ -10,11 +10,15 @@
         "start": "node build/index.js",
         "start:watch": "nodemon build/index.js",
         "build": "tsc --build",
-        "watch": "tsc --watch"
+        "watch": "tsc --watch",
+        "lint": "eslint ./src"
     },
     "dependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.36.1",
+        "@typescript-eslint/parser": "^5.36.1",
         "discord.js": "^14.0.3",
         "dotenv": "^16.0.1",
+        "eslint": "^8.23.0",
         "nodemon": "^2.0.19",
         "typescript": "^4.7.4"
     }
