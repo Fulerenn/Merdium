@@ -33,7 +33,7 @@ const command: MerdiumChatCommand = {
             })
             .setColor("#05668D");
 
-        client.commands.map((command: MerdiumChatCommand, index) => {
+        client.commands.map((command: MerdiumChatCommand) => {
             embed.addFields({
                 name: command.name,
                 value: command.description

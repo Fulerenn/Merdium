@@ -102,7 +102,7 @@ class MerdiumClient extends Client {
             }
 
             // TODO: Temporary, figure it out in a better way (without variable)
-            let isPermitted: boolean = true;
+            let isPermitted = true;
 
             if (command.permissions && command.permissions.length) {
                 command.permissions.find((permission) => {

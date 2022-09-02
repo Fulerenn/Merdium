@@ -30,7 +30,7 @@ class Logger {
     }
 
     private getFormatedDate() {
-        let storage = {
+        const storage = {
             day: 0,
             month: 0,
             year: 0,
@@ -48,6 +48,7 @@ class Logger {
         return `${storage.day}.${storage.month}.${storage.year} ${storage.hour}:${storage.minute}`;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private normalizeDigits(digits: any) {
         if (digits < 10) {
             return "0" + digits;

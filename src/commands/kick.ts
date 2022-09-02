@@ -22,7 +22,7 @@ const command: MerdiumChatCommand = {
     description: "Give's a kick to a target user",
     permissions: ["BanMembers"],
     run: (message: Message) => {
-        const defReason: string = "Reason unspecified!";
+        const defReason = "Reason unspecified!";
 
         const args: string[] = message.content.slice(1).trim().split(/ +/g);
         const target: User = message.mentions.users.first();
